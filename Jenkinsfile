@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application...'
-                    gv.buildApp
+                    gv.buildApp()
                 }
             }
         }
