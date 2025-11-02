@@ -4,8 +4,17 @@ def testApp() {
     echo "executing pipeline for branch $BRANCH_NAME"
 }
 
+def buildApp() {
+        sh 'docker build -t salzaidy/book-api:1.0 .'
+}
+
+
 def deployApp() {
     echo "deploying the application"
+    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+        sh 'echo $PASS | docker login -u $USER --password-stdin'
+        sh 'docker push salzaidy/book-api:1.0'
+    }
 }
 
 return this
