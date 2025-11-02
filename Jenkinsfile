@@ -1,3 +1,5 @@
+#! /user/bin/env groovy
+
 def gv
 
 pipeline {
@@ -12,7 +14,7 @@ pipeline {
         stage("init") {
             steps {
                 script {
-                    gv = load "script.groovy"
+                    gv = load 'script.groovy'
                 }
             }
         }
