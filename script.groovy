@@ -4,9 +4,17 @@ def testApp() {
     echo "executing pipeline for branch $BRANCH_NAME"
 }
 
-def buildApp() {
-        sh 'docker build -t salzaidy/book-api:1.0 .'
+
+def buildJarFile() {
+    sh 'gradle clean'
+    sh './gradlew bootJar'
 }
+
+def buildDockerImage() {
+    echo "building docker image"
+    sh 'docker build -t salzaidy/book-api:1.0 .'
+}
+
 
 
 def deployApp() {

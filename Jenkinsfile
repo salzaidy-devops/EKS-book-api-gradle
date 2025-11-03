@@ -27,16 +27,23 @@ pipeline {
             }
         }
 
-        stage("build") {
+        stage("buildJarFile") {
+            steps {
+                echo "Building jar file..."
+                gv.buildJarFile()
+            }
+        }
+
+        stage("buildDockerImage") {
             steps {
                 script {
                     echo 'Building the application...'
-                    gv.buildApp()
+                    gv.buildDockerImage()
                 }
             }
         }
 
-        stage("deploy") {
+        stage("deployDockerImage") {
             steps {
                 script{
                     echo 'Deploying the application...'
