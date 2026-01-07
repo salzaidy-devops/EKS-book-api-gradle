@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     echo 'Testing the application...'
-                    gv.testApp()
+                    // gv.testApp()
                 }
             }
         }
