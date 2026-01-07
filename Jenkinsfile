@@ -89,6 +89,7 @@ stage("increment build number") {
                 script {
                     echo "Building jar file..."
 //                     gv.buildJarFile()
+                    buildGradleBootJarWithdot()
                 }
 
             }
@@ -99,6 +100,10 @@ stage("increment build number") {
                 script {
                     echo 'Building the application...'
 //                     gv.buildDockerImage()
+                    echo 'Building Docker image...'
+                    buildImage(env.IMAGE_NAME)
+                    dockerLogin()
+                    dockerPush(env.IMAGE_NAME)
                 }
             }
         }
