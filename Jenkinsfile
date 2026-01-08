@@ -78,6 +78,11 @@ pipeline {
                 script{
                     echo 'Deploying the application...'
                    // gv.deployApp()
+                   sh 'aws sts get-caller-identity'
+                   sh 'aws configure list'
+//                    sh 'kubectl config get-contexts'
+//                    sh 'kubectl config current-context'
+//                    sh 'kubectl cluster-info'
                    sh 'kubectl create deployment nginx-deployment --image=nginx'
                 }
             }
