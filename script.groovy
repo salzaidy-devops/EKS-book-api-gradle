@@ -55,8 +55,10 @@ def setupGradleImageName() {
 
     env.PROJECT_NAME = projectName
 
+    def repo = env.DOCKER_REGISTRY == 'ecr' ? env.ECR_REPO : env.DOCKERHUB_REPO
+
     // 3) Build IMAGE_NAME env var
-    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
+    env.IMAGE_NAME = "${repo}/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
     echo "IMAGE_NAME will be: ${env.IMAGE_NAME}"
 }
 

@@ -17,6 +17,12 @@ pipeline {
         gradle 'gradle-8.12'
     }
 
+    environment {
+        DOCKER_REGISTRY = 'dockerhub'   // or 'ecr'
+        DOCKERHUB_REPO = 'salzaidy'
+        ECR_REPO = '915473859991.dkr.ecr.us-east-1.amazonaws.com/java-gradle-apps'
+    }
+
     stages {
         stage("init") {
             steps {

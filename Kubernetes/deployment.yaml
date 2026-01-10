@@ -16,6 +16,7 @@ spec:
     spec:
       imagePullSecrets:
         - name: my-registry-key
+#        - name: aws-registry-key
       containers:
         - name: $PROJECT_NAME
           image: $IMAGE_NAME
