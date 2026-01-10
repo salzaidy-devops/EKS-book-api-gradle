@@ -55,7 +55,7 @@ def setupGradleImageName() {
 
 
     // 3) Build IMAGE_NAME env var
-    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${BUILD_NUMBER}"
+    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
     echo "IMAGE_NAME will be: ${env.IMAGE_NAME}"
 }
 
