@@ -41,7 +41,6 @@ pipeline {
                 script {
                     echo 'Incrementing Gradle build version and preparing IMAGE_NAME...'
                     gv.setupGradleImageName()
-                    sh "grep -n \"^version\" build.gradle || true"
                 }
             }
         }
