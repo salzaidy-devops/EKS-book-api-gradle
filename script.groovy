@@ -10,20 +10,6 @@ def buildJarFile() {
     sh './gradlew bootJar'
 }
 
-def buildDockerImage() {
-    echo "building docker image"
-    sh 'docker build -t salzaidy/book-api:1.0 .'
-}
-
-
-
-def deployApp() {
-    echo "deploying the application"
-    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-        sh 'echo $PASS | docker login -u $USER --password-stdin'
-        sh 'docker push salzaidy/book-api:1.0'
-    }
-}
 
 
 def setupGradleImageName() {
@@ -63,6 +49,9 @@ def setupGradleImageName() {
     def nameMatcher = (settings =~ /rootProject\.name\s*=\s*['"](.+)['"]/)
     def projectName = nameMatcher ? nameMatcher[0][1] : "unknown-project"
     echo "Project name from settings.gradle is: ${projectName}"
+
+    env.PROJECT_NAME = projectName
+
 
     // 3) Build IMAGE_NAME env var
     env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${BUILD_NUMBER}"
