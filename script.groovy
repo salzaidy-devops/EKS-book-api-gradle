@@ -36,8 +36,8 @@ def setupGradleImageName() {
     echo "New Gradle project version will be: ${newVersion}"
 
     // Replace version line in build.gradle
-//             def updatedGradleFile = gradleFile.replaceFirst(/version\s*=\s*'.+'/, "version = '${newVersion}'")
-//             writeFile file: 'build.gradle', text: updatedGradleFile
+             def updatedGradleFile = gradleFile.replaceFirst(/version\s*=\s*'.+'/, "version = '${newVersion}'")
+             writeFile file: 'build.gradle', text: updatedGradleFile
 
     // Clear version (for Docker image tag)
     def clearVersion = newVersion.replace('-SNAPSHOT', '')
