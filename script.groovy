@@ -18,7 +18,8 @@ def setupGradleImageName() {
 
     // Extract current version: version = '0.0.1-SNAPSHOT'
     def versionMatcher = (gradleFile =~ /version\s*=\s*'(.+)'/)
-    def version = versionMatcher ? versionMatcher[0][1] : "0.0.1-SNAPSHOT"
+    def version = versionMatcher.find() ? versionMatcher.group(1) : "0.0.1-SNAPSHOT"
+    versionMatcher = null   // <-- FIX: avoid NotSerializableException
     echo "Raw version in build.gradle is: ${version}"
 
     // Remove -SNAPSHOT for numeric parsing
@@ -36,8 +37,9 @@ def setupGradleImageName() {
     echo "New Gradle project version will be: ${newVersion}"
 
     // Replace version line in build.gradle
-//             def updatedGradleFile = gradleFile.replaceFirst(/version\s*=\s*'.+'/, "version = '${newVersion}'")
-//             writeFile file: 'build.gradle', text: updatedGradleFile
+    def updatedGradleFile = gradleFile.replaceFirst(/version\s*=\s*'.+'/, "version = '${newVersion}'")
+    writeFile file: 'build.gradle', text: updatedGradleFile
+    // sh 'grep -n "^version" build.gradle || true'
 
     // Clear version (for Docker image tag)
     def clearVersion = newVersion.replace('-SNAPSHOT', '')
@@ -47,15 +49,16 @@ def setupGradleImageName() {
 
     def settings = readFile('settings.gradle')
     def nameMatcher = (settings =~ /rootProject\.name\s*=\s*['"](.+)['"]/)
-    def projectName = nameMatcher ? nameMatcher[0][1] : "unknown-project"
+    def projectName = nameMatcher.find() ? nameMatcher.group(1) : "unknown-project"
+    nameMatcher = null      // <-- FIX: avoid NotSerializableException
     echo "Project name from settings.gradle is: ${projectName}"
 
     env.PROJECT_NAME = projectName
 
-
     // 3) Build IMAGE_NAME env var
-    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${BUILD_NUMBER}"
+    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
     echo "IMAGE_NAME will be: ${env.IMAGE_NAME}"
 }
+
 
 return this
