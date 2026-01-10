@@ -18,9 +18,10 @@ pipeline {
     }
 
     environment {
-        DOCKER_REGISTRY = 'dockerhub'   // or 'ecr'
+        DOCKER_ECR_REPO_SERVER = '915473859991.dkr.ecr.us-east-1.amazonaws.com'
+        DOCKER_REGISTRY = 'ecr' //'dockerhub'   // or 'ecr'
         DOCKERHUB_REPO = 'salzaidy'
-        ECR_REPO = '915473859991.dkr.ecr.us-east-1.amazonaws.com/java-gradle-apps'
+        ECR_REPO = "{env.DOCKER_ECR_REPO_SERVER}/java-gradle-apps"
     }
 
     stages {
