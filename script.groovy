@@ -54,9 +54,22 @@ def setupGradleImageName() {
     echo "Project name from settings.gradle is: ${projectName}"
 
     env.PROJECT_NAME = projectName
-
+// OLD SETUP
+//    def repo = env.DOCKER_REGISTRY == 'ecr' ? env.ECR_REPO : env.DOCKERHUB_REPO
     // 3) Build IMAGE_NAME env var
-    env.IMAGE_NAME = "salzaidy/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
+//    env.IMAGE_NAME = "${repo}/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
+
+    // NEW SETUP
+    def isEcr = (env.DOCKER_REGISTRY == 'ecr')
+    def repo = isEcr ? env.ECR_REPO : env.DOCKERHUB_REPO
+
+    if (isEcr) {
+        // One ECR repo: java-gradle-apps
+        env.IMAGE_NAME = "${repo}:${projectName}-${clearVersion}-${env.BUILD_NUMBER}"
+    } else {
+        // Docker Hub: namespace/repo
+        env.IMAGE_NAME = "${repo}/${projectName}:${clearVersion}-${env.BUILD_NUMBER}"
+    }
     echo "IMAGE_NAME will be: ${env.IMAGE_NAME}"
 }
 
