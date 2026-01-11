@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     echo "Building jar file..."
-                    buildGradleBootJar()
+                    buildGradleJar()
                 }
             }
         }
