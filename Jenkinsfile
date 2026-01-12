@@ -19,15 +19,18 @@ pipeline {
 
     environment {
         DOCKER_ECR_REPO_SERVER = '915473859991.dkr.ecr.us-east-1.amazonaws.com'
-        DOCKER_REGISTRY = 'dockerhub' //'ecr'   // or 'ecr'
+        DOCKER_REGISTRY = 'ecr' //'dockerhub'   // or 'ecr'
         DOCKERHUB_REPO = 'salzaidy'
         ECR_REPO = "${env.DOCKER_ECR_REPO_SERVER}/java-gradle-apps"
+        AWS_ACCESS_KEY_ID_CRED_ID = 'jenkins_aws_access_key_id'
+        AWS_SECRET_ACCESS_KEY_CRED_ID = 'jenkins_aws_secret_access_key'
     }
 
     stages {
         stage("init") {
             steps {
                 script {
+                    echo "executing pipeline for branch $BRANCH_NAME"
                     gv = load 'script.groovy'
                 }
             }
@@ -38,7 +41,7 @@ pipeline {
             steps {
                 script {
                     echo 'Testing the application...'
-                    // gv.testApp()
+                    buildOps.test()
                 }
             }
         }
@@ -47,7 +50,8 @@ pipeline {
             steps {
                 script {
                     echo 'Incrementing Gradle build version and preparing IMAGE_NAME...'
-                    gv.setupGradleImageName()
+                    buildOps.bumpVersionAndPrepareImage()
+                    echo "IMAGE_NAME from library: ${env.IMAGE_NAME}"
                 }
             }
         }
@@ -57,7 +61,7 @@ pipeline {
             steps {
                 script {
                     echo "Building jar file..."
-                    buildGradleJar()
+                    buildOps.buildJar()
                 }
             }
         }
@@ -65,15 +69,10 @@ pipeline {
         stage("buildDockerImage") {
             steps {
                 script {
-                    echo 'Building the application...'
-                    echo 'Building Docker image...'
-                    // buildImage(env.IMAGE_NAME)
-                    // dockerLogin()
-                    // dockerPush(env.IMAGE_NAME)
+                    echo 'Building Docker image for branch $BRANCH_NAME'
                     dockerOps.build(env.IMAGE_NAME)
                     dockerOps.login()
                     dockerOps.push(env.IMAGE_NAME)
-
                 }
             }
         }
@@ -88,6 +87,7 @@ pipeline {
                    echo 'Deploying the application...'
                    //  sh 'aws sts get-caller-identity'
                    // sh 'aws configure list'
+                    sh 'kubectl config view --raw --minify | sed -n "/users:/,/contexts:/p"'
                    sh 'envsubst < Kubernetes/deployment.yaml | kubectl apply -f -'
                    sh 'envsubst < Kubernetes/service.yaml | kubectl apply -f -'
                    // sh 'kubectl config get-contexts'
