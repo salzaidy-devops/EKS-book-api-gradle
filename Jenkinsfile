@@ -19,7 +19,7 @@ pipeline {
 
     environment {
         DOCKER_ECR_REPO_SERVER = '915473859991.dkr.ecr.us-east-1.amazonaws.com'
-        DOCKER_REGISTRY = 'dockerhub' //'ecr'   // or 'ecr'
+        DOCKER_REGISTRY = 'ecr' //'dockerhub'   // or 'ecr'
         DOCKERHUB_REPO = 'salzaidy'
         ECR_REPO = "${env.DOCKER_ECR_REPO_SERVER}/java-gradle-apps"
     }
@@ -38,7 +38,6 @@ pipeline {
             steps {
                 script {
                     echo 'Testing the application...'
-                    // gv.testApp()
                     buildOps.test()
                 }
             }
@@ -48,7 +47,6 @@ pipeline {
             steps {
                 script {
                     echo 'Incrementing Gradle build version and preparing IMAGE_NAME...'
-                    // gv.setupGradleImageName()
                     buildOps.bumpVersionAndPrepareImage()
                     echo "IMAGE_NAME from library: ${env.IMAGE_NAME}"
                 }
@@ -60,7 +58,6 @@ pipeline {
             steps {
                 script {
                     echo "Building jar file..."
-                    // buildGradleJar()
                     buildOps.buildJar()
                 }
             }
@@ -73,7 +70,6 @@ pipeline {
                     dockerOps.build(env.IMAGE_NAME)
                     dockerOps.login()
                     dockerOps.push(env.IMAGE_NAME)
-
                 }
             }
         }
