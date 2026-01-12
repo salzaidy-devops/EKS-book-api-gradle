@@ -5,12 +5,6 @@ def testApp() {
 }
 
 
-def buildJarFile() {
-    sh 'gradle clean'
-    sh './gradlew bootJar'
-}
-
-
 
 def setupGradleImageName() {
     // 1) Read and update version in build.gradle
