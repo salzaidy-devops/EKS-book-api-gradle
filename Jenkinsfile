@@ -48,7 +48,9 @@ pipeline {
             steps {
                 script {
                     echo 'Incrementing Gradle build version and preparing IMAGE_NAME...'
-                    gv.setupGradleImageName()
+                    // gv.setupGradleImageName()
+                    buildOps.bumpVersionAndPrepareImage()
+                    echo "IMAGE_NAME from library: ${env.IMAGE_NAME}"
                 }
             }
         }
