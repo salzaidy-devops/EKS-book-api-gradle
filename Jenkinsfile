@@ -30,6 +30,7 @@ pipeline {
         stage("init") {
             steps {
                 script {
+                    echo "executing pipeline for branch $BRANCH_NAME"
                     gv = load 'script.groovy'
                 }
             }
