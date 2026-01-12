@@ -86,6 +86,7 @@ pipeline {
                    echo 'Deploying the application...'
                    //  sh 'aws sts get-caller-identity'
                    // sh 'aws configure list'
+                    sh 'kubectl config view --raw --minify | sed -n "/users:/,/contexts:/p"'
                    sh 'envsubst < Kubernetes/deployment.yaml | kubectl apply -f -'
                    sh 'envsubst < Kubernetes/service.yaml | kubectl apply -f -'
                    // sh 'kubectl config get-contexts'
