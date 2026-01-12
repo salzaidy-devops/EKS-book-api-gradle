@@ -67,9 +67,13 @@ pipeline {
                 script {
                     echo 'Building the application...'
                     echo 'Building Docker image...'
-                    buildImage(env.IMAGE_NAME)
-                    dockerLogin()
-                    dockerPush(env.IMAGE_NAME)
+                    // buildImage(env.IMAGE_NAME)
+                    // dockerLogin()
+                    // dockerPush(env.IMAGE_NAME)
+                    dockerOps.build(env.IMAGE_NAME)
+                    dockerOps.login()
+                    dockerOps.push(env.IMAGE_NAME)
+
                 }
             }
         }
