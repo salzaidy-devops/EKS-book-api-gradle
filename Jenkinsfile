@@ -22,6 +22,8 @@ pipeline {
         DOCKER_REGISTRY = 'ecr' //'dockerhub'   // or 'ecr'
         DOCKERHUB_REPO = 'salzaidy'
         ECR_REPO = "${env.DOCKER_ECR_REPO_SERVER}/java-gradle-apps"
+        AWS_ACCESS_KEY_ID_CRED_ID = 'jenkins_aws_access_key_id'
+        AWS_SECRET_ACCESS_KEY_CRED_ID = 'jenkins_aws_secret_access_key'
     }
 
     stages {
