@@ -39,6 +39,7 @@ pipeline {
                 script {
                     echo 'Testing the application...'
                     // gv.testApp()
+                    buildOps.test()
                 }
             }
         }
@@ -65,11 +66,7 @@ pipeline {
         stage("buildDockerImage") {
             steps {
                 script {
-                    echo 'Building the application...'
-                    echo 'Building Docker image...'
-                    // buildImage(env.IMAGE_NAME)
-                    // dockerLogin()
-                    // dockerPush(env.IMAGE_NAME)
+                    echo 'Building Docker image for branch $BRANCH_NAME'
                     dockerOps.build(env.IMAGE_NAME)
                     dockerOps.login()
                     dockerOps.push(env.IMAGE_NAME)
